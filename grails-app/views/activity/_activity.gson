@@ -1,0 +1,7 @@
+import org.acme.Activity
+
+model {
+    Activity activity
+}
+
+json g.render(activity)

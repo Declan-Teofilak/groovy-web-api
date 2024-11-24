@@ -1,0 +1,9 @@
+import org.acme.Level
+
+model {
+    List<Level> levels
+}
+
+json {
+    data(g.render(template: '/level/level', collection: levels, var: 'level'))
+}

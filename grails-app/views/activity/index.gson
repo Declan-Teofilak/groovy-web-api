@@ -1,0 +1,9 @@
+import org.acme.Activity
+
+model {
+    List<Activity> activities
+}
+
+json {
+    data(g.render(template: 'activity', collection: activities, var: 'activity'))
+}

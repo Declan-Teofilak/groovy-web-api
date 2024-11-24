@@ -1,0 +1,7 @@
+import org.acme.Level
+
+model {
+    Level level
+}
+
+json g.render(level)

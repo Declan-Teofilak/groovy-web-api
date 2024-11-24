@@ -1,0 +1,9 @@
+import org.acme.User
+
+model {
+    List<User> users
+}
+
+json {
+    data(g.render(template: 'user', collection: users, var: 'user'))
+}
