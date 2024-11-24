@@ -19,8 +19,11 @@ class UserService {
     def complete(Long userId, Long activityId) {
         def activity = Activity.findById(activityId)
         def user = User.findById(userId)
+        // Very cool that GROM supports this convention based on the Domain specification of the composite key!
+        def completedActivityExisting = CompletedActivity.findByUserAndActivity(user, activity)
 
-        if (activity && user)
+        //Ensure we don't already have a completed activity and that the activity and user are valid
+        if (!completedActivityExisting && (activity && user))
         {
             def completedActivity = new CompletedActivity()
             completedActivity.activity = activity
@@ -67,7 +70,8 @@ class UserService {
 
         for (CompletedActivity activity in activities)
         {
-            score += activity.activity.level.pointsAwarded
+            // NOTE: We multiply the points awarded for this activity's level based on the amount of competencies it holds
+            score += (activity.activity.level.pointsAwarded * activity.activity.competencies.size())
         }
 
         return score

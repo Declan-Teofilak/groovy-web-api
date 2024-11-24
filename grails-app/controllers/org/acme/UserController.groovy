@@ -12,6 +12,6 @@ class UserController {
 
     def complete(Long userId, Long activityId) {
         userService.complete(userId, activityId)
-        respond(["Activity completed: USER_ID {userId}, ACTIVITY_ID {activityId}."])
+        respond(["Activity completed: UserId - $userId | ActivityId - $activityId."])
     }
 }
