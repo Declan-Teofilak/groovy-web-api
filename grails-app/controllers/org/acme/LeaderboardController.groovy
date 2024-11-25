@@ -1,5 +1,7 @@
 package org.acme
 
+import io.micronaut.http.annotation.Body
+
 class LeaderboardController {
 
     def index() {
@@ -53,9 +55,9 @@ class LeaderboardController {
         ])
     }
 
-    def sortLeaderboardAndAssignRank(List<Object> leaderboardData)
+    def sortLeaderboardAndAssignRank(@Body List<LeaderboardDataItem> leaderboardData)
     {
-        leaderboardData
+        def sortedData = leaderboardData
                 ?.sort { a, b ->
                     b.level <=> a.level ?: b.points <=> a.points
                 }
@@ -69,5 +71,18 @@ class LeaderboardController {
         }
 
         return sortedData
+    }
+
+    /**
+     * Responsible for representing a User's data prepared for representation on the Leaderboard
+     * NOTE: I implemented the Serializable interface here to better conform to the documentation around abstract classes as params
+     */
+    class LeaderboardDataItem implements Serializable
+    {
+        Integer rank
+        Integer userId
+        Integer points
+        Integer level
+        String standing
     }
 }

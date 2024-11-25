@@ -11,7 +11,14 @@ class UserController {
     }
 
     def complete(Long userId, Long activityId) {
-        userService.complete(userId, activityId)
-        respond(["Activity completed: UserId - $userId | ActivityId - $activityId."])
+        try
+        {
+            userService.complete(userId, activityId)
+            respond(["Activity completed: UserId - $userId | ActivityId - $activityId."])
+        }
+        catch (Exception e)
+        {
+            render status: 400, text: e.message
+        }
     }
 }

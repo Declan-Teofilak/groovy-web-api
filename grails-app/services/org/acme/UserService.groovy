@@ -24,10 +24,7 @@ class UserService {
 
         if (completedActivity)
         {
-            // I decided to use a 409 response here since it captures that the record already exists
-            // but that there wasn't a functional error with the supplied params
-            render status: 409, text: "Acitvity ($activityId) has already been completed for supplied user ($userId)"
-            return
+            throw new Exception("409: Acitvity ($activityId) has already been completed for supplied user ($userId)")
         }
 
         //Ensure we don't already have a completed activity and that the activity and user are valid
@@ -42,9 +39,9 @@ class UserService {
         else
         {
             if (!activity)
-                render status: 400, text: "Unable to find Activity for supplied activityId ($activityId)"
+                throw new Exception("400: Unable to find Activity for supplied activityId ($activityId)")
             else if (!user)
-                render status: 400, text: "Unable to find User for supplied userId ($userId)"
+                throw new Exception("400: Unable to find User for supplied userId ($userId)")
         }
 
     }
@@ -58,8 +55,7 @@ class UserService {
         def user = User.findById(userId)
 
         if (!user) {
-            render status: 400, text: "No user found for the supplied userId ($userId)"
-            return
+            throw new Exception("400: No user found for the supplied userId ($userId)")
         }
 
         def activities = CompletedActivity.where {
@@ -71,6 +67,8 @@ class UserService {
 
     /**
      * Responsible for determining a User's total completed activities score
+     * PARAMS: userId - Long (Id of User we are determining score for)
+     * RETURNS: score - Integer (Summation of points accumulated across activities completed)
      */
     static
     def determineUserScore(Long userId)
@@ -89,7 +87,9 @@ class UserService {
     }
 
     /**
-     * Responsible for determining the user's level (returns the Integer position)
+     * Responsible for determining the user's level
+     * PARAMS: userId - Long (Id of User we are determining the level for)
+     * RETURNS: currBestLevel - Integer (Highest "position based" level) based on README ruleset for leveling
      */
     static
     def determineUserLevelPosition(Long userId)
