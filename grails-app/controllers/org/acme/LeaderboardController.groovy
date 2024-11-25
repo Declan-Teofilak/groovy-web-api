@@ -5,8 +5,13 @@ import io.micronaut.http.annotation.Body
 class LeaderboardController {
 
     def index() {
-
         def leaderboardData = []
+
+        // If no completed records, return empty array
+        if (CompletedActivity.count() == 0) {
+            respond([data: leaderboardData])
+            return
+        }
 
         // Sort the users into the leaderboard Data
         // We get their full name and then use the two UserService methods to fetch their score and level position
@@ -29,13 +34,18 @@ class LeaderboardController {
     }
 
     def indexFilteredByStanding(String classStandingFilter) {
-
         def leaderboardData = []
 
-            // Sort the users into the leaderboard Data
-            // the users are first filtered based on their classStanding
-            // We get their full name and then use the two UserService methods to fetch their score and level position
-            User.where { classStanding == classStandingFilter }
+        // If no completed records, return empty array
+        if (CompletedActivity.count() == 0) {
+            respond([data: leaderboardData])
+            return
+        }
+
+        // Sort the users into the leaderboard Data
+        // the users are first filtered based on their classStanding
+        // We get their full name and then use the two UserService methods to fetch their score and level position
+        User.where { classStanding == classStandingFilter }
                 .list()
                 .each { user ->
             leaderboardData << [
@@ -44,8 +54,7 @@ class LeaderboardController {
                     points: UserService.determineUserScore(user.id),
                     level: UserService.determineUserLevelPosition(user.id),
                     standing: user.classStanding
-            ]
-        }
+            ] }
 
         def sortedData = sortLeaderboardAndAssignRank(leaderboardData)
 
@@ -55,9 +64,9 @@ class LeaderboardController {
         ])
     }
 
-    def sortLeaderboardAndAssignRank(@Body List<LeaderboardDataItem> leaderboardData)
-    {
+    def sortLeaderboardAndAssignRank(@Body List<LeaderboardDataItem> leaderboardData) {
         def sortedData = leaderboardData
+                ?.findAll(user -> user.points > 0)
                 ?.sort { a, b ->
                     b.level <=> a.level ?: b.points <=> a.points
                 }
@@ -65,10 +74,13 @@ class LeaderboardController {
 
         // We user the local rank param here to iterate over the top twenty and assign said rank to the data point
         def rank = 1
-        sortedData.take(20).each { data ->
-            data["rank"] = rank
-            rank++
-        }
+
+        sortedData
+                .take(20)
+                .each { data ->
+                    data["rank"] = rank
+                    rank++
+                }
 
         return sortedData
     }
@@ -77,8 +89,7 @@ class LeaderboardController {
      * Responsible for representing a User's data prepared for representation on the Leaderboard
      * NOTE: I implemented the Serializable interface here to better conform to the documentation around abstract classes as params
      */
-    class LeaderboardDataItem implements Serializable
-    {
+    class LeaderboardDataItem implements Serializable {
         Integer rank
         Integer userId
         Integer points
