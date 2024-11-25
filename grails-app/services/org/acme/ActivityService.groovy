@@ -18,17 +18,4 @@ class ActivityService {
             builder.fetchMode("competencies", FetchMode.JOIN)
         }) as List<Activity>).unique()
     }
-
-    /**
-     * Responsible for fetching activities available for users to complete
-     */
-    @Transactional(readOnly = true)
-    List<CompletedActivity> completedActivities() {
-        return (CompletedActivity.createCriteria().list({
-            HibernateCriteriaBuilder builder = (HibernateCriteriaBuilder) delegate
-            builder.fetchMode("activity", FetchMode.JOIN)
-            builder.fetchMode("activity.level", FetchMode.JOIN)
-            builder.fetchMode("activity.competencies", FetchMode.JOIN)
-        }) as List<CompletedActivity>).unique()
-    }
 }

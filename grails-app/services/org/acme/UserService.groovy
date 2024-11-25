@@ -20,12 +20,20 @@ class UserService {
         def activity = Activity.findById(activityId)
         def user = User.findById(userId)
         // Very cool that GROM supports this convention based on the Domain specification of the composite key!
-        def completedActivityExisting = CompletedActivity.findByUserAndActivity(user, activity)
+        def completedActivity = CompletedActivity.findByUserAndActivity(user, activity)
+
+        if (completedActivity)
+        {
+            // I decided to use a 409 response here since it captures that the record already exists
+            // but that there wasn't a functional error with the supplied params
+            render status: 409, text: "Acitvity ($activityId) has already been completed for supplied user ($userId)"
+            return
+        }
 
         //Ensure we don't already have a completed activity and that the activity and user are valid
-        if (!completedActivityExisting && (activity && user))
+        if (activity && user)
         {
-            def completedActivity = new CompletedActivity()
+            completedActivity = new CompletedActivity()
             completedActivity.activity = activity
             completedActivity.user = user
             completedActivity.dateCreated = new Date()
@@ -33,7 +41,10 @@ class UserService {
         }
         else
         {
-            render status: 400, text: "Unable to complete Activity"
+            if (!activity)
+                render status: 400, text: "Unable to find Activity for supplied activityId ($activityId)"
+            else if (!user)
+                render status: 400, text: "Unable to find User for supplied userId ($userId)"
         }
 
     }
@@ -47,7 +58,7 @@ class UserService {
         def user = User.findById(userId)
 
         if (!user) {
-            render status: 400, text: "Bad User Id"
+            render status: 400, text: "No user found for the supplied userId ($userId)"
             return
         }
 
@@ -85,7 +96,7 @@ class UserService {
     {
         List<CompletedActivity> activities = fetchAllCompletedActivitiesForUser(userId)
 
-        HashMap<Integer, Integer> levelMappings = new HashMap<Level, Integer>()
+        HashMap<Integer, Integer> levelMappings = new HashMap<Integer, Integer>()
 
         // For each activity, map the position to the number of occurrences
         // Using a hashmap here for quicker retrieval
