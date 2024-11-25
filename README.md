@@ -105,8 +105,8 @@ Update README to include descriptions for each required API endpoint and how to 
 
 I added test coverage to ensure the basic functionality of completing an activity for a specific user works as expected. 
 However, I chose not to expand the tests beyond this initial coverage for the following reasons:
-    - My primary focus was on delivering the functional requirements, as I felt this was the most critical aspect of the task.
-    - Given my limited familiarity with the language and tools, I prioritized learning how to implement the core functionality over diving deeply into writing additional tests.
+   - My primary focus was on delivering the functional requirements, as I felt this was the most critical aspect of the task.
+   - Given my limited familiarity with the language and tools, I prioritized learning how to implement the core functionality over diving deeply into writing additional tests.
 
 That said, I’m pleased to have successfully learned the syntax for the test suite and covered the fundamental functionality. 
 In a typical development scenario, I would aim to have comprehensive test coverage for all the code I write.
