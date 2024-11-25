@@ -91,7 +91,7 @@ Update README to include descriptions for each required API endpoint and how to 
     - The request's controller is at `grails-app/controllers/org/acme/UserController.groovy`.
     - If the supplied userId or activityId does not tie to a valid User or Activity respectively, you will receive a 400 status
     - Additionally, supplying a valid userId and activityId of which there already exists a CompletedActivity record will return a 409 status
-      - The 409 Conflict status better indicates that the request could not be completed due to a duplicate record, rather than a functional error.
+      - The 409 Conflict status better indicates that the request could not be completed due to a duplicate record, rather than a functional error
 - GET http://localhost:8080/api/leaderboard
     - The request's controller is at `grails-app/controllers/org/acme/LeaderboardController.groovy`.
     - The leaderboard request will return the top 20 users, sorted first by their level (descending), then by their total points earned (descending)
