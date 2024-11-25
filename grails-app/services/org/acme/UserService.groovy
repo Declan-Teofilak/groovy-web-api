@@ -21,12 +21,12 @@ class UserService {
     def complete(Long userId, Long activityId) {
         def activity = Activity.findById(activityId)
         def user = User.findById(userId)
-        // Very cool that GROM supports this convention based on the Domain specification of the composite key!
+        // Very cool that GORM supports this convention based on the Domain specification of the composite key!
         def completedActivity = CompletedActivity.findByUserAndActivity(user, activity)
         
         // Ensure we don't already have a completed activity 
         if (completedActivity) {
-            throw new Exception("409: Acitvity ($activityId) has already been completed for supplied user ($userId)")
+            throw new Exception("409: Activity ($activityId) has already been completed for supplied user ($userId)")
         }
 
         // and that the activity and user are valid
