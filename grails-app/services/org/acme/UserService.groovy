@@ -14,6 +14,8 @@ class UserService {
 
     /**
      * Responsible for completing an activity
+     * PARAMS: userId - Long (Id of user to assign to new CompletedActivity)
+     * PARAMS: activityId - Long (Id of the Activity to assign to new CompletedActivity)
      */
     @Transactional
     def complete(Long userId, Long activityId) {
@@ -49,6 +51,8 @@ class UserService {
 
     /**
      * Responsible for fetching all completed activities
+     * PARAMS: userId - Long (Id of user to find Completed Activities for)
+     * RETURNS activities - List (CompletedActivities sorted by supplied userId)
      */
     static
     def fetchAllCompletedActivitiesForUser(Long userId)
@@ -90,7 +94,7 @@ class UserService {
     /**
      * Responsible for determining the user's level
      * PARAMS: userId - Long (Id of User we are determining the level for)
-     * RETURNS: currBestLevel - Integer (Highest "position based" level) based on README ruleset for leveling
+     * RETURNS: currentBestLevel - Integer (Highest "position based" level) based on README ruleset for leveling
      */
     static
     def determineUserLevelPosition(Long userId)
@@ -107,14 +111,14 @@ class UserService {
         }
 
         // Used to track the current highest level fetched from the map
-        def currBestLevel = 0
+        def currentBestLevel = 0
 
         for (Level level in Level.list(sort: "position", order: "asc"))
         {
-            if (level.position > currBestLevel && levelMappings[level.position] >= level.activitiesRequired)
-                currBestLevel = level.position
+            if (level.position > currentBestLevel && levelMappings[level.position] >= level.activitiesRequired)
+                currentBestLevel = level.position
         }
 
-        return currBestLevel
+        return currentBestLevel
     }
 }

@@ -84,3 +84,29 @@ the connection url `dbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE`.
 
 ### Submission
 Update README to include descriptions for each required API endpoint and how to interact with them. Submit your project by providing a github url or zip file containing your submission.
+
+### API Endpoint Updates
+
+- GET|POST http://localhost:8080/api/users/$userId/complete/$activityId
+    - The request's controller is at `grails-app/controllers/org/acme/UserController.groovy`.
+    - If the supplied userId or activityId does not tie to a valid User or Activity respectively, you will receive a 400 status
+    - Additionally, supplying a valid userId and activityId of which there already exists a CompletedActivity record will return a 409 status
+      - The 409 Conflict status better indicates that the request could not be completed due to a duplicate record, rather than a functional error.
+- GET http://localhost:8080/api/leaderboard
+    - The request's controller is at `grails-app/controllers/org/acme/LeaderboardController.groovy`.
+    - The leaderboard request will return the top 20 users, sorted first by their level (descending), then by their total points earned (descending)
+    - If no completed activities are on record, the response will return an empty array
+- GET http://localhost:8080/api/leaderboard/standing/$classStanding
+    - The request's controller is at `grails-app/controllers/org/acme/LeaderboardController.groovy`.
+    - This request will return the leaderboard data for a specified subset of Users, determined by the User's Class Standing
+    - The response will contain an empty data array, similar to the general leaderboard request, if there is no corresponding set of Users with a classStanding that matches the provided parameter
+
+### Test Coverage
+
+I added test coverage to ensure the basic functionality of completing an activity for a specific user works as expected. 
+However, I chose not to expand the tests beyond this initial coverage for the following reasons:
+    - My primary focus was on delivering the functional requirements, as I felt this was the most critical aspect of the task.
+    - Given my limited familiarity with the language and tools, I prioritized learning how to implement the core functionality over diving deeply into writing additional tests.
+
+That said, I’m pleased to have successfully learned the syntax for the test suite and covered the fundamental functionality. 
+In a typical development scenario, I would aim to have comprehensive test coverage for all the code I write.
