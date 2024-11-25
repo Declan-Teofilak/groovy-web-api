@@ -27,7 +27,7 @@ class UserService {
             throw new Exception("409: Acitvity ($activityId) has already been completed for supplied user ($userId)")
         }
 
-        //Ensure we don't already have a completed activity and that the activity and user are valid
+        // Ensure we don't already have a completed activity and that the activity and user are valid
         if (activity && user)
         {
             completedActivity = new CompletedActivity()
