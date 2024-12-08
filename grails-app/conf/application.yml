@@ -4,6 +4,13 @@ info:
     version: '@info.app.version@'
     grailsVersion: '@info.app.grailsVersion@' 
 grails:
+  cors:
+    enabled: true
+    mappings:
+      "/**":
+        allowedOrigins: "http://localhost:3000"
+        allowedMethods: ["GET", "POST", "PUT", "DELETE"]
+        allowedHeaders: "*"
   codegen:
     defaultPackage: org.acme
   profile: rest-api

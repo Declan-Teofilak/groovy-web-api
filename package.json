@@ -1,0 +1,14 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "The goal of this project is to extend a [Grails 6.x](https://docs.grails.org/6.1.x/guide/single.html) REST JSON API to include support for the following APIs: 1. Completing activities for a user (Completion API)    1. This can be seen as \"checking off\" tasks on a task list    2. Gaining experience/points as a result of completing an activity 1. Viewing the current leaderboard (Leaderboard API)    1. Viewing which users are top performers based on points they've acquired",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

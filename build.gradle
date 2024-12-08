@@ -23,13 +23,13 @@ apply plugin: "org.grails.plugins.views-json"
 apply plugin: "java"
 
 repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
+    mavenLocal()
+    maven { url "https://repo.grails.org/grails/core" }
 
-        // Additions made to target spring security saml updates
-        mavenCentral()
-        maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    // Additions made to target spring security saml updates
+    mavenCentral()
+    maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencyManagement {
